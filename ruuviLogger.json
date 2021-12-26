@@ -1,0 +1,16 @@
+{
+  "ruuviTags": [
+    {
+      "name": "living room",
+      "address": "C5:CE:2D:AA:D3:87"
+    },
+    {
+      "name": "basement",
+      "address": "C9:73:96:D3:F9:A0"
+    },
+    {
+      "name": "garden",
+      "address": "F2:03:48:17:D1:28"
+    }
+  ]
+}
