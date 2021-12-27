@@ -4,15 +4,27 @@ import (
     "bytes"
     "encoding/binary"
     "errors"
+    "fmt"
+    "math"
+)
+
+const (
+    maxUint16 = ^uint16(0)
+    maxInt16  = int16(maxUint16 >> 1)
+    minInt16  = -maxInt16 - 1
+
+    maxUint8 = ^uint8(0)
 )
 
 type SensorData struct {
-    Temperature    *float64
-    Humidity       *float64
-    Pressure       *float64
-    Acceleration   AccelerationData
-    BatteryVoltage *float64
-    TXPower        *float64
+    Temperature     *float64
+    Humidity        *float64
+    Pressure        *float64
+    Acceleration    AccelerationData
+    BatteryVoltage  *float64
+    TXPower         *float64
+    MovementCounter *uint8
+    SequenceNo      *uint16
 }
 
 type AccelerationData struct {
@@ -21,11 +33,37 @@ type AccelerationData struct {
     Z *float64
 }
 
-const (
-    maxUint16 = ^uint16(0)
-    maxInt16  = int16(maxUint16 >> 1)
-    minInt16  = -maxInt16 - 1
-)
+func valueOrNan(f *float64) float64 {
+    if f != nil {
+        return *f
+    }
+
+    return math.NaN()
+}
+
+func (sd SensorData) ToString() string {
+    var movements uint8 = maxUint8
+    if sd.MovementCounter != nil {
+        movements = *sd.MovementCounter
+    }
+
+    var seq uint16 = maxUint16
+    if sd.SequenceNo != nil {
+        seq = *sd.SequenceNo
+    }
+
+    return fmt.Sprintf("temperature: %f °C, humidity: %f %%, pressure: %f hPa, acc.: (%f, %f, %f) G, battery: %f V, TX power: %f dBm, movements: %d, meas. seq.: %d",
+        valueOrNan(sd.Temperature),
+        valueOrNan(sd.Humidity),
+        valueOrNan(sd.Pressure),
+        valueOrNan(sd.Acceleration.X),
+        valueOrNan(sd.Acceleration.Y),
+        valueOrNan(sd.Acceleration.Z),
+        valueOrNan(sd.BatteryVoltage),
+        valueOrNan(sd.TXPower),
+        movements,
+        seq)
+}
 
 func NewSensorData(data []byte) (*SensorData, error) {
     if data[0] != 0x5 {
@@ -100,6 +138,21 @@ func NewSensorData(data []byte) (*SensorData, error) {
         txPower := float64(2*(unsignedData&0b11111)) - 40.0
         sd.BatteryVoltage = &batteryVoltage
         sd.TXPower = &txPower
+    }
+
+    if data[15] == maxUint8 {
+        sd.MovementCounter = nil
+    } else {
+        sd.MovementCounter = &data[15]
+    }
+
+    buf = bytes.NewReader(data[16:18])
+    _ = binary.Read(buf, binary.BigEndian, &unsignedData)
+    if unsignedData == maxUint16 {
+        sd.SequenceNo = nil
+    } else {
+        seqNo := unsignedData
+        sd.SequenceNo = &seqNo
     }
 
     return &sd, nil

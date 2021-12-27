@@ -8,6 +8,7 @@ import (
     "github.com/muka/go-bluetooth/bluez/profile/adapter"
     "github.com/muka/go-bluetooth/bluez/profile/device"
     "ruuviLogger"
+    "ruuviLogger/ruuviSensorProtocol"
 
     _ "ruuviLogger"
 )
@@ -77,7 +78,13 @@ func logData(rt *device.Device1) {
                     case msg := <-propsCh:
                         if msg.Name == manufacturerDataProp {
                             if values, ok := msg.Value.(map[uint16]dbus.Variant)[ruuviManufacturerID]; ok {
-                                log.Printf("values: %x from device %s", values.Value().([]byte), rt.Properties.Address)
+                                sd, err := ruuviSensorProtocol.NewSensorData(values.Value().([]byte))
+                                if err != nil {
+                                    log.Printf("error interpreting sensor data from device %s from message %x: %s",
+                                        rt.Properties.Address, values.Value().([]byte), err)
+                                } else {
+                                    log.Printf("values: %s from device %s", sd.ToString(), rt.Properties.Address)
+                                }
                             }
                         }
                     }

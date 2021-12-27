@@ -54,6 +54,14 @@ func Test_valid_data_from_Ruuvi_project_can_be_interpreted(t *testing.T) {
     if *sd.TXPower != 4.0 {
         t.Errorf("expected TX power 4.0, got %f", *sd.TXPower)
     }
+
+    if *sd.MovementCounter != 66 {
+        t.Errorf("expected movement count 66, got %d", *sd.MovementCounter)
+    }
+
+    if *sd.SequenceNo != 205 {
+        t.Errorf("expected measurement sequence number 205, got %d", *sd.SequenceNo)
+    }
 }
 
 func Test_max_data_from_Ruuvi_project_can_be_interpreted(t *testing.T) {
@@ -94,6 +102,14 @@ func Test_max_data_from_Ruuvi_project_can_be_interpreted(t *testing.T) {
 
     if *sd.TXPower != 20.0 {
         t.Errorf("expected TX power 20.0, got %f", *sd.TXPower)
+    }
+
+    if *sd.MovementCounter != 254 {
+        t.Errorf("expected movement count 254, got %d", *sd.MovementCounter)
+    }
+
+    if *sd.SequenceNo != 65534 {
+        t.Errorf("expected measurement sequence number 65534, got %d", *sd.SequenceNo)
     }
 }
 
@@ -136,6 +152,14 @@ func Test_min_data_from_Ruuvi_project_can_be_interpreted(t *testing.T) {
     if *sd.TXPower != -40.0 {
         t.Errorf("expected TX power -40.0, got %f", *sd.TXPower)
     }
+
+    if *sd.MovementCounter != 0 {
+        t.Errorf("expected movement count 0, got %d", *sd.MovementCounter)
+    }
+
+    if *sd.SequenceNo != 0 {
+        t.Errorf("expected measurement sequence number 0, got %d", *sd.SequenceNo)
+    }
 }
 
 func Test_invalid_data_from_Ruuvi_project_is_recognized_as_such(t *testing.T) {
@@ -149,7 +173,7 @@ func Test_invalid_data_from_Ruuvi_project_is_recognized_as_such(t *testing.T) {
 
     if sd.Temperature != nil || sd.Humidity != nil || sd.Pressure != nil ||
         sd.Acceleration.X != nil || sd.Acceleration.Y != nil || sd.Acceleration.Z != nil ||
-        sd.BatteryVoltage != nil || sd.TXPower != nil {
+        sd.BatteryVoltage != nil || sd.TXPower != nil || sd.MovementCounter != nil || sd.SequenceNo != nil {
         t.Error("the invalid/unavailable sensor data should consist of only nil values but it doesn't")
     }
 }
