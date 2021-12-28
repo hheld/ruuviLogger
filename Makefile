@@ -19,3 +19,11 @@ stop-db:
 
 rm-db: stop-db
 	docker rm weatherdb
+
+rp1-build:
+	GOARCH=arm go build ./cmd/migrate
+	GOARCH=arm go build ./cmd/ruuviLogger
+
+rp1-pkg: .env rp1-build ruuviLogger.json
+	tar zcf ruuviLogger.tgz .env ./db/migrations ruuviLogger.json migrate ruuviLogger
+	rm migrate ruuviLogger
