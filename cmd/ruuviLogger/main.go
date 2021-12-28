@@ -2,6 +2,7 @@ package main
 
 import (
     "log"
+    "time"
 
     "github.com/godbus/dbus/v5"
     ble "github.com/muka/go-bluetooth/api"
@@ -22,7 +23,7 @@ const (
 type sensorStore interface {
     AddRuuvitag(name, address string) error
     GetRuuvitagID(address string) (int, error)
-    AddMeasurement(data *ruuviSensorProtocol.SensorData, ruuvitagID int) error
+    AddMeasurement(data ruuviSensorProtocol.SensorData, ruuvitagID int) error
 }
 
 func discoverBluetoothDevices(ruuvitagDiscovered chan<- *device.Device1, sensorDb sensorStore) {
@@ -87,6 +88,8 @@ func logData(rt *device.Device1, sensorDb sensorStore) {
 
         propsCh, err := rt.WatchProperties()
 
+        var lastSensorData *ruuviSensorProtocol.SensorData = nil
+
         if err == nil {
             lastSequenceNo := ^uint16(0)
 
@@ -103,14 +106,26 @@ func logData(rt *device.Device1, sensorDb sensorStore) {
                                 } else {
                                     if sd.SequenceNo != nil {
                                         if *sd.SequenceNo != lastSequenceNo {
-                                            if err := sensorDb.AddMeasurement(sd, sensorID); err != nil {
-                                                log.Printf("could not write values %s to DB for sensor %s: %s", sd.ToString(), rt.Properties.Address, err)
-                                            } else {
-                                                lastSequenceNo = *sd.SequenceNo
-                                            }
+                                            lastSequenceNo = *sd.SequenceNo
+                                            lastSensorData = sd
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }()
+
+            go func() {
+                for {
+                    select {
+                    case <-time.After(time.Duration(ruuviLogger.Cfg.DbWriteIntervalInSec) * time.Second):
+                        if lastSensorData != nil {
+                            if err := sensorDb.AddMeasurement(*lastSensorData, sensorID); err != nil {
+                                log.Printf("could not write values %s to DB for sensor %s: %s", lastSensorData.ToString(), rt.Properties.Address, err)
+                            } else {
+                                lastSensorData = nil
                             }
                         }
                     }

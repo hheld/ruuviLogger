@@ -7,7 +7,7 @@ import (
     "ruuviLogger/ruuviSensorProtocol"
 )
 
-func (db *sensorDb) AddMeasurement(data *ruuviSensorProtocol.SensorData, ruuvitagID int) error {
+func (db *sensorDb) AddMeasurement(data ruuviSensorProtocol.SensorData, ruuvitagID int) error {
     query := `INSERT INTO measurements
                 (time, temperature, humidity, pressure, accel_x, accel_y, accel_z, battery_voltage, tx_power, movements, ruuvitag_id)
               VALUES
