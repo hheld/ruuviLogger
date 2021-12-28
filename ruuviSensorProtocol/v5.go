@@ -33,7 +33,7 @@ type AccelerationData struct {
     Z *float64
 }
 
-func valueOrNan(f *float64) float64 {
+func ValueOrNan(f *float64) float64 {
     if f != nil {
         return *f
     }
@@ -53,14 +53,14 @@ func (sd SensorData) ToString() string {
     }
 
     return fmt.Sprintf("temperature: %f °C, humidity: %f %%, pressure: %f hPa, acc.: (%f, %f, %f) G, battery: %f V, TX power: %f dBm, movements: %d, meas. seq.: %d",
-        valueOrNan(sd.Temperature),
-        valueOrNan(sd.Humidity),
-        valueOrNan(sd.Pressure),
-        valueOrNan(sd.Acceleration.X),
-        valueOrNan(sd.Acceleration.Y),
-        valueOrNan(sd.Acceleration.Z),
-        valueOrNan(sd.BatteryVoltage),
-        valueOrNan(sd.TXPower),
+        ValueOrNan(sd.Temperature),
+        ValueOrNan(sd.Humidity),
+        ValueOrNan(sd.Pressure),
+        ValueOrNan(sd.Acceleration.X),
+        ValueOrNan(sd.Acceleration.Y),
+        ValueOrNan(sd.Acceleration.Z),
+        ValueOrNan(sd.BatteryVoltage),
+        ValueOrNan(sd.TXPower),
         movements,
         seq)
 }

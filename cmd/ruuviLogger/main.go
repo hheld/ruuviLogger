@@ -8,6 +8,7 @@ import (
     "github.com/muka/go-bluetooth/bluez/profile/adapter"
     "github.com/muka/go-bluetooth/bluez/profile/device"
     "ruuviLogger"
+    "ruuviLogger/db"
     "ruuviLogger/ruuviSensorProtocol"
 
     _ "ruuviLogger"
@@ -18,7 +19,13 @@ const (
     manufacturerDataProp = "ManufacturerData"
 )
 
-func discoverBluetoothDevices(ruuvitagDiscovered chan<- *device.Device1) {
+type sensorStore interface {
+    AddRuuvitag(name, address string) error
+    GetRuuvitagID(address string) (int, error)
+    AddMeasurement(data *ruuviSensorProtocol.SensorData, ruuvitagID int) error
+}
+
+func discoverBluetoothDevices(ruuvitagDiscovered chan<- *device.Device1, sensorDb sensorStore) {
     btAdapter, err := ble.GetDefaultAdapter()
     if err != nil {
         log.Fatalf("could not find a Bluetooth adapter: %s", err)
@@ -59,19 +66,30 @@ func discoverBluetoothDevices(ruuvitagDiscovered chan<- *device.Device1) {
                 }
 
                 if !foundBefore {
-                    ruuvitagDiscovered <- rt
                     indicesOfDiscoveredRuuvitags = append(indicesOfDiscoveredRuuvitags, i)
+                    if err := sensorDb.AddRuuvitag(desiredRuuvitag.Name, desiredRuuvitag.Address); err != nil {
+                        log.Printf("could not add newly discovered Ruuvitag to the database: %s", err)
+                    }
+                    ruuvitagDiscovered <- rt
                 }
             }
         }
     }
 }
 
-func logData(rt *device.Device1) {
+func logData(rt *device.Device1, sensorDb sensorStore) {
     if rt != nil {
+        sensorID, err := sensorDb.GetRuuvitagID(rt.Properties.Address)
+        if err != nil {
+            log.Printf("could not get the sensor ID: %s", err)
+            return
+        }
+
         propsCh, err := rt.WatchProperties()
 
         if err == nil {
+            lastSequenceNo := ^uint16(0)
+
             go func() {
                 for {
                     select {
@@ -83,7 +101,15 @@ func logData(rt *device.Device1) {
                                     log.Printf("error interpreting sensor data from device %s from message %x: %s",
                                         rt.Properties.Address, values.Value().([]byte), err)
                                 } else {
-                                    log.Printf("values: %s from device %s", sd.ToString(), rt.Properties.Address)
+                                    if sd.SequenceNo != nil {
+                                        if *sd.SequenceNo != lastSequenceNo {
+                                            if err := sensorDb.AddMeasurement(sd, sensorID); err != nil {
+                                                log.Printf("could not write values %s to DB for sensor %s: %s", sd.ToString(), rt.Properties.Address, err)
+                                            } else {
+                                                lastSequenceNo = *sd.SequenceNo
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -95,15 +121,20 @@ func logData(rt *device.Device1) {
 }
 
 func main() {
+    sensorDb, err := db.ConnectToDb()
+    if err != nil {
+        log.Fatalf("could not connect to the database: %s", err)
+    }
+
     ruuviTagsDiscovered := make(chan *device.Device1)
 
-    go discoverBluetoothDevices(ruuviTagsDiscovered)
+    go discoverBluetoothDevices(ruuviTagsDiscovered, sensorDb)
 
     for {
         select {
         case ruuvitagDevice := <-ruuviTagsDiscovered:
             log.Printf("found Ruuvitag %s", ruuvitagDevice.Properties.Address)
-            logData(ruuvitagDevice)
+            logData(ruuvitagDevice, sensorDb)
         }
     }
 }
