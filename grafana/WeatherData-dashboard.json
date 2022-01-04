@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1640853209230,
+  "iteration": 1641283473652,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -39,10 +39,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -58,6 +54,9 @@
       },
       "id": 9,
       "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -66,8 +65,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "textMode": "auto"
       },
       "pluginVersion": "8.3.3",
       "targets": [
@@ -115,7 +113,7 @@
         }
       ],
       "title": "Current temperature",
-      "type": "gauge"
+      "type": "stat"
     },
     {
       "fieldConfig": {
@@ -128,16 +126,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 30
-              },
-              {
-                "color": "red",
-                "value": 80
+                "value": null
               }
             ]
           },
@@ -153,6 +143,9 @@
       },
       "id": 11,
       "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -161,8 +154,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "textMode": "auto"
       },
       "pluginVersion": "8.3.3",
       "targets": [
@@ -210,7 +202,7 @@
         }
       ],
       "title": "Current humidity",
-      "type": "gauge"
+      "type": "stat"
     },
     {
       "fieldConfig": {
@@ -240,6 +232,9 @@
       },
       "id": 12,
       "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -248,8 +243,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "textMode": "auto"
       },
       "pluginVersion": "8.3.3",
       "targets": [
@@ -297,7 +291,7 @@
         }
       ],
       "title": "Current air pressure",
-      "type": "gauge"
+      "type": "stat"
     },
     {
       "fieldConfig": {
@@ -310,12 +304,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "orange",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 10
+                "value": null
               }
             ]
           },
@@ -331,6 +321,9 @@
       },
       "id": 13,
       "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -339,8 +332,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true
+        "textMode": "auto"
       },
       "pluginVersion": "8.3.3",
       "targets": [
@@ -388,7 +380,7 @@
         }
       ],
       "title": "Current battery voltage",
-      "type": "gauge"
+      "type": "stat"
     },
     {
       "collapsed": false,
@@ -891,7 +883,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "living room",
           "value": "living room"
         },
@@ -938,6 +930,6 @@
   "timezone": "browser",
   "title": "Weather data",
   "uid": "N3ANGGA7z",
-  "version": 14,
+  "version": 15,
   "weekStart": "monday"
 }
