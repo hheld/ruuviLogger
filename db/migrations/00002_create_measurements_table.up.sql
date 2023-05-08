@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS measurements
     CONSTRAINT fk_ruuvitag FOREIGN KEY (ruuvitag_id) REFERENCES ruuvitag (id)
 );
 
-SELECT create_hypertable('measurements', 'time');
+-- SELECT create_hypertable('measurements', 'time');
