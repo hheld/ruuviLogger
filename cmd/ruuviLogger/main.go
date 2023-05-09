@@ -1,14 +1,14 @@
 package main
 
 import (
+	"github.com/godbus/dbus/v5"
+	ble "github.com/muka/go-bluetooth/api"
 	"github.com/muka/go-bluetooth/bluez"
+	"github.com/muka/go-bluetooth/bluez/profile/adapter"
+	"github.com/muka/go-bluetooth/bluez/profile/device"
 	"log"
 	"time"
 
-	"github.com/godbus/dbus/v5"
-	ble "github.com/muka/go-bluetooth/api"
-	"github.com/muka/go-bluetooth/bluez/profile/adapter"
-	"github.com/muka/go-bluetooth/bluez/profile/device"
 	"ruuviLogger"
 	"ruuviLogger/db"
 	"ruuviLogger/ruuviSensorProtocol"
@@ -127,6 +127,8 @@ func logData(rt *device.Device1, sensorDb sensorStore) {
 						if lastSensorData != nil {
 							if err := sensorDb.AddMeasurement(*lastSensorData, sensorID); err != nil {
 								log.Printf("could not write values %s to DB for sensor %s: %s", lastSensorData.ToString(), rt.Properties.Address, err)
+							} else {
+								lastSensorData = nil
 							}
 						}
 					case sd := <-sensorData:
