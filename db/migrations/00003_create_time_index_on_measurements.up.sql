@@ -1,0 +1,1 @@
+CREATE INDEX idx_time ON measurements (time);
