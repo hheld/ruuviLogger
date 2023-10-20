@@ -12,7 +12,7 @@ start-db:
 		-e POSTGRES_DB=weather \
 		-e TIMESCALEDB_TELEMETRY=off \
 		-v weatherdb:/var/lib/postgresql/data \
-		timescale/timescaledb:2.5.1-pg14
+		postgres:latest
 
 stop-db:
 	docker stop weatherdb

@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,16 +24,19 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1641283473652,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-BlYlRd"
           },
           "mappings": [],
           "thresholds": {
@@ -54,9 +60,6 @@
       },
       "id": 9,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -65,14 +68,15 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -113,15 +117,21 @@
         }
       ],
       "title": "Current temperature",
-      "type": "stat"
+      "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-BlYlRd"
           },
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -143,9 +153,6 @@
       },
       "id": 11,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -154,14 +161,15 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -202,15 +210,21 @@
         }
       ],
       "title": "Current humidity",
-      "type": "stat"
+      "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-BlYlRd"
           },
           "mappings": [],
+          "max": 1100,
+          "min": 800,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -232,9 +246,6 @@
       },
       "id": 12,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -243,14 +254,15 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -291,13 +303,17 @@
         }
       ],
       "title": "Current air pressure",
-      "type": "stat"
+      "type": "gauge"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-BlYlRd"
           },
           "mappings": [],
           "thresholds": {
@@ -321,9 +337,6 @@
       },
       "id": 13,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -332,14 +345,15 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -380,10 +394,14 @@
         }
       ],
       "title": "Current battery voltage",
-      "type": "stat"
+      "type": "gauge"
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -392,16 +410,31 @@
       },
       "id": 7,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "2XdNOnRgk"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "History",
       "type": "row"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -462,17 +495,19 @@
             "mean"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -516,12 +551,18 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -582,17 +623,19 @@
             "mean"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -636,12 +679,18 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -702,17 +751,19 @@
             "mean"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -756,12 +807,18 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "2XdNOnRgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -822,17 +879,19 @@
             "mean"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "EW5umGA7k"
+            "uid": "2XdNOnRgk"
           },
           "format": "time_series",
           "group": [],
@@ -876,7 +935,8 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 34,
+  "refresh": "",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -884,8 +944,12 @@
       {
         "current": {
           "selected": false,
-          "text": "living room",
-          "value": "living room"
+          "text": "garden",
+          "value": "garden"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "2XdNOnRgk"
         },
         "definition": "SELECT name FROM ruuvitag",
         "hide": 1,
@@ -904,8 +968,12 @@
       {
         "current": {
           "selected": false,
-          "text": "1",
-          "value": "1"
+          "text": "2",
+          "value": "2"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "2XdNOnRgk"
         },
         "definition": "SELECT id FROM ruuvitag WHERE name='$ruuvitagName'",
         "hide": 2,
@@ -930,6 +998,6 @@
   "timezone": "browser",
   "title": "Weather data",
   "uid": "N3ANGGA7z",
-  "version": 15,
+  "version": 5,
   "weekStart": "monday"
 }
