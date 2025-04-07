@@ -1,14 +1,15 @@
 package main
 
 import (
+	"log"
+	"time"
+
 	"github.com/godbus/dbus/v5"
 	ble "github.com/muka/go-bluetooth/api"
 	"github.com/muka/go-bluetooth/bluez/profile/device"
-	"log"
 	"ruuviLogger"
 	"ruuviLogger/db"
 	"ruuviLogger/ruuviSensorProtocol"
-	"time"
 
 	_ "ruuviLogger"
 )
